@@ -1,0 +1,23 @@
+<ng-container *ngIf="product$ | async as product">
+  <div class="flex justify-content-between flex-wrap">
+    <div class="flex align-items-center">
+      <h1>{{ product.name }}</h1>
+    </div>
+    <div class="flex align-items-center">
+      <p-button icon="pi pi-file-edit" styleClass="p-button-outlined mr-2" [routerLink]="['/product', product.id, 'edit']"></p-button>
+      <p-button icon="pi pi-trash" styleClass="p-button-outlined p-button-danger" (click)="confirmDelete($event)"></p-button>
+      <p-confirmPopup></p-confirmPopup>
+    </div>
+  </div>
+  <p-card>
+    <ul>
+      <li>ID: {{ product.id }}</li>
+      <li>Identifier: {{ product.identifier }}</li>
+      <li>Name: {{ product.name }}</li>
+      <li>Unit Price: {{ product.unitPrice }}</li>
+      <li>Description: {{ product.description }}</li>
+      <li>Merchant: {{ product.merchant.name }}</li>
+      <li>Created by: {{ product.createdBy?.username }} </li>
+    </ul>
+  </p-card>
+</ng-container>

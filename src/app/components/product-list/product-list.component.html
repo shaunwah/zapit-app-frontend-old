@@ -1,0 +1,58 @@
+<div class="flex justify-content-between flex-wrap">
+  <div class="flex align-items-center">
+    <h1>Products</h1>
+  </div>
+  <div class="flex align-items-center">
+    <p-button icon="pi pi-plus" styleClass="p-button-outlined p-button-success" [routerLink]="['/product/new']"></p-button>
+  </div>
+</div>
+<ng-container *ngIf="products">
+  <p-card>
+    <p-table
+      #table
+      [value]="products"
+      [lazy]="true"
+      (onLazyLoad)="onLazyLoad(table, $event)"
+      dataKey="id"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [selection]="selectedProduct"
+      (onRowSelect)="onRowSelect($event)"
+      [paginator]="true"
+      [rows]="10"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      selectionMode="single"
+      [showCurrentPageReport]="true"
+      [loading]="loading"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [globalFilterFields]="['identifier', 'name']"
+    >
+      <ng-template pTemplate="caption">
+          <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="filterGlobalTable(table, $event, 'contains')" placeholder="Search">
+          </span>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="merchant">Merchant <p-sortIcon field="merchant"></p-sortIcon></th>
+          <th>Image</th>
+          <th pSortableColumn="identifier">Identifier <p-sortIcon field="identifier"></p-sortIcon></th>
+          <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="unitPrice">Unit Price <p-sortIcon field="unitPrice"></p-sortIcon></th>
+          <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr [pSelectableRow]="product">
+          <td>{{ product.merchant.name }}</td>
+          <td>image</td>
+          <td>{{ product.identifier }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.unitPrice | currency:'SGD' }}</td>
+          <td>category</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</ng-container>

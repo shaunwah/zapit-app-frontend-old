@@ -1,0 +1,32 @@
+<h1>Register</h1>
+<p-card>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="username">Username</label>
+      <input type="text" pInputText aria-describedby="username-help" formControlName="username">
+      <ng-container *ngIf="username.invalid && (username.dirty || username.touched)">
+        <small id="username-help" class="p-error" *ngIf="username.getError('required')">Username is required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="email">Email</label>
+      <input type="email" pInputText aria-describedby="email-help" formControlName="email">
+      <ng-container *ngIf="email.invalid && (email.dirty || email.touched)">
+        <small id="email-help" class="p-error">
+          <ng-container *ngIf="email.getError('required')">Email is required</ng-container>
+          <ng-container *ngIf="email.getError('email')">Email has to be in a valid format</ng-container>
+        </small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="password">Password</label>
+      <input type="password" pInputText aria-describedby="password-help" formControlName="password">
+      <ng-container *ngIf="password.invalid && (password.dirty || password.touched)">
+        <small id="password-help" class="p-error" *ngIf="password.getError('required')">Password is required</small>
+      </ng-container>
+    </div>
+    <div>
+      <button type="submit" pButton label="Register" [disabled]="registerForm.invalid"></button>
+    </div>
+  </form>
+</p-card>

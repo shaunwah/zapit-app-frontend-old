@@ -1,0 +1,61 @@
+<h1>{{ componentTitle }}</h1>
+<p-card>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-column gap-1 mb-3" formGroupName="merchant">
+      <label htmlFor="merchantId">Merchant</label>
+      <ng-container *ngIf="merchants$ | async as merchants">
+        <p-dropdown [options]="merchants" optionLabel="name" optionValue="id" [autoDisplayFirst]="false" aria-describedby="merchantId-help" formControlName="id"></p-dropdown>
+      </ng-container>
+      <ng-container *ngIf="merchantId.invalid && (merchantId.dirty || merchantId.touched)">
+        <small id="merchantId-help" class="p-error" *ngIf="merchantId.getError('required')">Merchant is required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="identifier">Identifier</label>
+      <input type="text" pInputText aria-describedby="identifier-help" formControlName="identifier">
+      <ng-container *ngIf="identifier.invalid && (identifier.dirty || identifier.touched)">
+        <small id="identifier-help" class="p-error" *ngIf="identifier.getError('required')">Identifier is required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="name">Name</label>
+      <input type="text" pInputText aria-describedby="name-help" formControlName="name">
+      <ng-container *ngIf="name.invalid && (name.dirty || name.touched)">
+        <small id="name-help" class="p-error" *ngIf="name.getError('required')">Name is required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="image">Image</label>
+      <input type="text" pInputText aria-describedby="image-help" formControlName="image">
+      <ng-container *ngIf="image.invalid && (image.dirty || image.touched)">
+        <small id="image-help" class="p-error" *ngIf="image.getError('required')">Image is required</small>
+      </ng-container>
+    </div>
+<!--    <div class="flex flex-column gap-1 mb-3" formGroupName="category">-->
+<!--      <label htmlFor="categoryId">Category</label>-->
+<!--      <ng-container *ngIf="merchants$ | async as merchants">-->
+<!--        <p-dropdown [options]="merchants" optionLabel="name" optionValue="id" [autoDisplayFirst]="false" aria-describedby="merchantId-help" formControlName="id"></p-dropdown>-->
+<!--      </ng-container>-->
+<!--      <ng-container *ngIf="categoryId.invalid && (categoryId.dirty || categoryId.touched)">-->
+<!--        <small id="categoryId-help" class="p-error" *ngIf="categoryId.getError('required')">Category is required</small>-->
+<!--      </ng-container>-->
+<!--    </div>-->
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="name">Description</label>
+      <textarea rows="5" cols="30" pInputTextarea aria-describedby="description-help" formControlName="description"></textarea>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="unitPrice">Unit Price</label>
+      <p-inputNumber inputId="unitPrice" mode="currency" currency="SGD" locale="en-SG" aria-describedby="unitPrice-help" formControlName="unitPrice"> </p-inputNumber>
+      <ng-container *ngIf="unitPrice.invalid && (unitPrice.dirty || unitPrice.touched)">
+        <small id="unitPrice-help" class="p-error">
+          <ng-container *ngIf="unitPrice.getError('required')">Unit Price is required</ng-container>
+          <ng-container *ngIf="unitPrice.getError('min')">Unit Price cannot be negative</ng-container>
+        </small>
+      </ng-container>
+    </div>
+    <div>
+      <button type="submit" pButton label="Submit" [disabled]="productForm.invalid || (editMode && !productForm.dirty)"></button>
+    </div>
+  </form>
+</p-card>
