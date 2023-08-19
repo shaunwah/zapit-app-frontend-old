@@ -1,15 +1,17 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Product} from "../interfaces/product";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Product } from '../interfaces/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private http = inject(HttpClient);
-  readonly httpHeaders = new HttpHeaders()
-    .set('Content-Type', 'application/json');
+  readonly httpHeaders = new HttpHeaders().set(
+    'Content-Type',
+    'application/json',
+  );
   readonly apiUrl = '/api';
 
   getProductCount(): Observable<number> {
@@ -18,15 +20,20 @@ export class ProductService {
     });
   }
 
-  getProducts(page?: number, size?: number, sortColumn?: string, sortDirection?: number): Observable<Product[]> {
+  getProducts(
+    page?: number,
+    size?: number,
+    sortColumn?: string,
+    sortDirection?: number,
+  ): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/products`, {
       headers: this.httpHeaders,
       params: {
         page: page ?? '',
         size: size ?? '',
         sortColumn: sortColumn ?? '',
-        sortDirection: sortDirection ?? ''
-      }
+        sortDirection: sortDirection ?? '',
+      },
     });
   }
 

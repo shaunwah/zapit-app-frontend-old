@@ -1,25 +1,31 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Merchant} from "../interfaces/merchant";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Merchant } from '../interfaces/merchant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MerchantService {
   private http = inject(HttpClient);
-  readonly httpHeaders = new HttpHeaders()
-    .set('Content-Type', 'application/json');
+  readonly httpHeaders = new HttpHeaders().set(
+    'Content-Type',
+    'application/json',
+  );
   readonly apiUrl = '/api';
 
-  getMerchants(isActive?: boolean, limit?: number, offset?: number): Observable<Merchant[]> {
+  getMerchants(
+    isActive?: boolean,
+    limit?: number,
+    offset?: number,
+  ): Observable<Merchant[]> {
     return this.http.get<Merchant[]>(`${this.apiUrl}/merchants`, {
       headers: this.httpHeaders,
       params: {
         isActive: isActive ?? '',
         limit: limit ?? '',
-        offset: offset ?? ''
-      }
+        offset: offset ?? '',
+      },
     });
   }
 

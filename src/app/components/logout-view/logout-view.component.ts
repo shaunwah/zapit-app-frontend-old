@@ -1,12 +1,12 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
-import {MessageService} from "primeng/api";
+import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-logout-view',
   templateUrl: './logout-view.component.html',
-  styleUrls: ['./logout-view.component.css']
+  styleUrls: ['./logout-view.component.css'],
 })
 export class LogoutViewComponent implements OnInit {
   router = inject(Router);
@@ -15,8 +15,11 @@ export class LogoutViewComponent implements OnInit {
 
   ngOnInit() {
     this.authService.logout();
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: "Logged out" });
-    this.router.navigate(["/login"]);
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Logged out',
+    });
+    this.router.navigate(['/login']);
   }
-
 }

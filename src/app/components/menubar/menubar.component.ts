@@ -1,10 +1,10 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
+import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-menubar',
   templateUrl: './menubar.component.html',
-  styleUrls: ['./menubar.component.css']
+  styleUrls: ['./menubar.component.css'],
 })
 export class MenubarComponent implements OnInit {
   items!: MenuItem[];
@@ -18,14 +18,14 @@ export class MenubarComponent implements OnInit {
           {
             label: 'View',
             icon: 'pi pi-fw pi-list',
-            routerLink: '/products'
+            routerLink: '/products',
           },
           {
             label: 'New',
             icon: 'pi pi-fw pi-plus',
-            routerLink: '/product/new'
-          }
-        ]
+            routerLink: '/product/new',
+          },
+        ],
       },
       {
         label: 'Account',
@@ -34,10 +34,10 @@ export class MenubarComponent implements OnInit {
           {
             label: 'Logout',
             icon: 'pi pi-fw pi-sign-out',
-            routerLink: '/logout'
-          }
-        ]
-      }
+            routerLink: '/logout',
+          },
+        ],
+      },
     ];
   }
 }

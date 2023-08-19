@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {ProductFormComponent,} from "./components/product-form/product-form.component";
-import {ProductListComponent} from "./components/product-list/product-list.component";
-import {ProductViewComponent} from "./components/product-view/product-view.component";
-import {LoginFormComponent} from "./components/login-form/login-form.component";
-import {LogoutViewComponent} from "./components/logout-view/logout-view.component";
-import {RegisterUserComponent} from "./components/register-user/register-user.component";
-import {authGuard} from "./guards/auth.guard";
+import { ProductFormComponent } from './components/product-form/product-form.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductViewComponent } from './components/product-view/product-view.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { LogoutViewComponent } from './components/logout-view/logout-view.component';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -15,16 +15,16 @@ const routes: Routes = [
     title: 'Register',
     canActivate: [!authGuard],
     data: {
-      breadcrumb: 'Register'
-    }
+      breadcrumb: 'Register',
+    },
   },
   {
     path: 'login',
     component: LoginFormComponent,
     title: 'Login',
     data: {
-      breadcrumb: 'Login'
-    }
+      breadcrumb: 'Login',
+    },
   },
   {
     path: 'logout',
@@ -32,8 +32,8 @@ const routes: Routes = [
     title: 'Logout',
     canActivate: [authGuard],
     data: {
-      breadcrumb: 'Logout'
-    }
+      breadcrumb: 'Logout',
+    },
   },
   {
     path: 'products',
@@ -41,8 +41,8 @@ const routes: Routes = [
     title: 'Products',
     canActivate: [authGuard],
     data: {
-      breadcrumb: 'Products'
-    }
+      breadcrumb: 'Products',
+    },
   },
   {
     path: 'product/new',
@@ -50,8 +50,8 @@ const routes: Routes = [
     title: 'New Product',
     canActivate: [authGuard],
     data: {
-      breadcrumb: 'New'
-    }
+      breadcrumb: 'New',
+    },
   },
   {
     path: 'product/:productId/edit',
@@ -59,8 +59,8 @@ const routes: Routes = [
     title: 'New Product',
     canActivate: [authGuard],
     data: {
-      breadcrumb: 'New'
-    }
+      breadcrumb: 'New',
+    },
   },
   {
     path: 'product/:productId',
@@ -68,14 +68,14 @@ const routes: Routes = [
     title: 'Product',
     canActivate: [authGuard],
     data: {
-      breadcrumb: 'View'
-    }
+      breadcrumb: 'View',
+    },
   },
   // { path: '**', redirectTo: '', pathMatch: 'prefix' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

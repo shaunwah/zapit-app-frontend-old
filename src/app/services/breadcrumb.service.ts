@@ -1,9 +1,9 @@
-import {inject, Injectable} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {MenuItem} from "primeng/api";
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BreadcrumbService {
   private router = inject(Router);

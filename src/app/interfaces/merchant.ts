@@ -1,5 +1,5 @@
-import {MerchantStore} from "./merchant-store";
-import {User} from "./user";
+import { MerchantStore } from './merchant-store';
+import { User } from './user';
 
 export interface Merchant {
   id?: number;

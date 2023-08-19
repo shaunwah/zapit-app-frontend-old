@@ -1,34 +1,38 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {User} from "../interfaces/user";
-import {Observable} from "rxjs";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { User } from '../interfaces/user';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  readonly apiUrl = "/api/auth";
-  readonly auth_token = "AUTH_TOKEN";
-  readonly httpHeaders = new HttpHeaders()
-    .set('Content-Type', 'application/json');
+  readonly apiUrl = '/api/auth';
+  readonly auth_token = 'AUTH_TOKEN';
+  readonly httpHeaders = new HttpHeaders().set(
+    'Content-Type',
+    'application/json',
+  );
 
   register(user: User): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/register`, user, {
-      headers: this.httpHeaders
+      headers: this.httpHeaders,
     });
   }
 
   login(user: User): Observable<User> {
     const authDetails = btoa(`${user.email}:${user.password}`);
-    const httpHeaders = new HttpHeaders()
-      .set("Authorization", `Basic ${authDetails}`);
+    const httpHeaders = new HttpHeaders().set(
+      'Authorization',
+      `Basic ${authDetails}`,
+    );
     return this.http.post<User>(`${this.apiUrl}/login`, null, {
-      headers: httpHeaders
+      headers: httpHeaders,
     });
   }
 
-  logout(): void{
+  logout(): void {
     this.clearTokenInSession();
   }
 
