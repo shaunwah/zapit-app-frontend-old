@@ -21,14 +21,16 @@ export class ProductService {
   }
 
   getProducts(
-    page?: number,
-    size?: number,
-    sortColumn?: string,
-    sortDirection?: number,
+    like?: string | null,
+    page?: number | null,
+    size?: number | null,
+    sortColumn?: string | null,
+    sortDirection?: number | null,
   ): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/products`, {
       headers: this.httpHeaders,
       params: {
+        like: like ?? '',
         page: page ?? '',
         size: size ?? '',
         sortColumn: sortColumn ?? '',

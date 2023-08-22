@@ -1,0 +1,52 @@
+<ng-container *ngIf="product">
+  <div class="flex justify-content-between flex-wrap">
+    <div class="flex flex-column">
+      <h1>{{ product.name }}</h1>
+    </div>
+    <div class="flex align-items-center">
+      <p-button icon="pi pi-file-edit" styleClass="p-button-outlined mr-2" [routerLink]="['/product', product.id, 'edit']"></p-button>
+      <p-button icon="pi pi-trash" styleClass="p-button-outlined p-button-danger" (click)="confirmDelete($event)"></p-button>
+      <p-confirmPopup></p-confirmPopup>
+    </div>
+  </div>
+  <h3 class="mt-0">Details</h3>
+  <ul class="list-none m-0 p-0">
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Identifier</span>
+      <span>{{ product.identifier }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Description</span>
+      <span>{{ product.description }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Unit Price</span>
+      <span>{{ product.unitPrice | currency }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Created by</span>
+      <span>{{ product.createdBy?.username }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Created on</span>
+      <span>{{ product.createdOn | date: "medium" }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Updated on</span>
+      <span>{{ product.updatedOn | date: "medium" }}</span>
+    </li>
+  </ul>
+  <p-divider></p-divider>
+  <h3>Merchant</h3>
+  <!--  <app-description-list [items]="items"></app-description-list>-->
+  <ul class="list-none m-0 p-0">
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Name</span>
+      <span><a class="no-underline" [routerLink]="['/merchant', product.merchant.id]">{{ product.merchant.name }}</a></span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Identifier</span>
+      <span>{{ product.merchant.identifier }}</span>
+    </li>
+  </ul>
+</ng-container>

@@ -1,19 +1,31 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductFormComponent } from './components/product-form/product-form.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { ProductViewComponent } from './components/product-view/product-view.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { LogoutViewComponent } from './components/logout-view/logout-view.component';
-import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { ProductFormComponent } from './components/product/product-form/product-form.component';
+import { ProductListComponent } from './components/product/product-list/product-list.component';
+import { ProductViewComponent } from './components/product/product-view/product-view.component';
+import { LoginFormComponent } from './components/auth/login-form/login-form.component';
+import { LogoutViewComponent } from './components/auth/logout-view/logout-view.component';
+import { RegisterUserComponent } from './components/auth/register-user/register-user.component';
 import { authGuard } from './guards/auth.guard';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MerchantListComponent } from './components/merchant/merchant-list/merchant-list.component';
+import { MerchantFormComponent } from './components/merchant/merchant-form/merchant-form.component';
+import { MerchantViewComponent } from './components/merchant/merchant-view/merchant-view.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: DashboardComponent,
+    title: 'Dashboard',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'Dashboard',
+    },
+  },
   {
     path: 'register',
     component: RegisterUserComponent,
     title: 'Register',
-    canActivate: [!authGuard],
     data: {
       breadcrumb: 'Register',
     },
@@ -36,6 +48,30 @@ const routes: Routes = [
     },
   },
   {
+    path: 'merchants',
+    component: MerchantListComponent,
+    title: 'Merchants',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'merchant/new',
+    component: MerchantFormComponent,
+    title: 'New Merchant',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'merchant/:merchantId/edit',
+    component: MerchantFormComponent,
+    title: 'Edit Merchant',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'merchant/:merchantId',
+    component: MerchantViewComponent,
+    title: 'Merchant',
+    canActivate: [authGuard],
+  },
+  {
     path: 'products',
     component: ProductListComponent,
     title: 'Products',
@@ -56,7 +92,7 @@ const routes: Routes = [
   {
     path: 'product/:productId/edit',
     component: ProductFormComponent,
-    title: 'New Product',
+    title: 'Edit Product',
     canActivate: [authGuard],
     data: {
       breadcrumb: 'New',

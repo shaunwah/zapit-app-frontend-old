@@ -3,10 +3,11 @@ import { User } from './user';
 
 export interface Merchant {
   id?: number;
-  // user: number;
   identifier: string;
   name: string;
   nameAlt?: string;
+  website?: string;
+  merchantUsers: User[];
   merchantStores: MerchantStore[];
   isActive?: boolean;
   isHidden?: boolean;

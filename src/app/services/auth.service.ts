@@ -9,13 +9,15 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private http = inject(HttpClient);
   readonly apiUrl = '/api/auth';
-  readonly auth_token = 'AUTH_TOKEN';
+  readonly accessToken = 'access_token';
+  readonly username = 'username';
   readonly httpHeaders = new HttpHeaders().set(
     'Content-Type',
     'application/json',
   );
 
   register(user: User): Observable<User> {
+    console.log(user);
     return this.http.post<User>(`${this.apiUrl}/register`, user, {
       headers: this.httpHeaders,
     });
@@ -33,27 +35,45 @@ export class AuthService {
   }
 
   logout(): void {
-    this.clearTokenInSession();
+    this.clearTokenInStorage();
+    this.clearUsernameInStorage();
   }
 
   isAuthenticated(): boolean {
-    return this.getTokenInSession() != null;
+    return this.getTokenInStorage() != null;
   }
 
-  setTokenInSession(token: string): void {
-    this.clearTokenInSession();
-    window.sessionStorage.setItem(this.auth_token, JSON.stringify(token));
+  setTokenInStorage(token: string): void {
+    this.clearTokenInStorage();
+    localStorage.setItem(this.accessToken, token);
   }
 
-  getTokenInSession(): string | null {
-    const token = window.sessionStorage.getItem(this.auth_token);
+  setUsernameInStorage(username: string): void {
+    this.clearUsernameInStorage();
+    localStorage.setItem(this.username, username);
+  }
+
+  getTokenInStorage(): string | null {
+    const token = localStorage.getItem(this.accessToken);
     if (token) {
-      return JSON.parse(token);
+      return token;
     }
     return null;
   }
 
-  clearTokenInSession(): void {
-    window.sessionStorage.removeItem(this.auth_token);
+  getUsernameInStorage(): string | null {
+    const username = localStorage.getItem(this.username);
+    if (username) {
+      return username;
+    }
+    return null;
+  }
+
+  clearTokenInStorage(): void {
+    localStorage.removeItem(this.accessToken);
+  }
+
+  clearUsernameInStorage(): void {
+    localStorage.removeItem(this.username);
   }
 }

@@ -1,23 +1,28 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule } from './primeng.module';
-import { ProductFormComponent } from './components/product-form/product-form.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { MenubarComponent } from './components/menubar/menubar.component';
-import { ProductViewComponent } from './components/product-view/product-view.component';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { ProductFormComponent } from './components/product/product-form/product-form.component';
+import { ProductListComponent } from './components/product/product-list/product-list.component';
+import { MenubarComponent } from './components/partials/menubar/menubar.component';
+import { ProductViewComponent } from './components/product/product-view/product-view.component';
+import { BreadcrumbComponent } from './components/partials/breadcrumb/breadcrumb.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { AuthInterceptor } from './auth.interceptor';
-import { LogoutViewComponent } from './components/logout-view/logout-view.component';
-import { RegisterUserComponent } from './components/register-user/register-user.component';
-import { StoreModule } from '@ngrx/store';
+import { LoginFormComponent } from './components/auth/login-form/login-form.component';
+import { LogoutViewComponent } from './components/auth/logout-view/logout-view.component';
+import { RegisterUserComponent } from './components/auth/register-user/register-user.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { DescriptionListComponent } from './components/partials/description-list/description-list.component';
+import { MerchantListComponent } from './components/merchant/merchant-list/merchant-list.component';
+import { MerchantViewComponent } from './components/merchant/merchant-view/merchant-view.component';
+import { MerchantFormComponent } from './components/merchant/merchant-form/merchant-form.component';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 @NgModule({
   declarations: [
@@ -30,6 +35,11 @@ import { StoreModule } from '@ngrx/store';
     LoginFormComponent,
     LogoutViewComponent,
     RegisterUserComponent,
+    DashboardComponent,
+    DescriptionListComponent,
+    MerchantListComponent,
+    MerchantViewComponent,
+    MerchantFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,11 +54,18 @@ import { StoreModule } from '@ngrx/store';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    StoreModule.forRoot({}, {}),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('access_token'),
+        allowedDomains: ['localhost:8080'],
+        disallowedRoutes: ['https://example.com'],
+      },
+    }),
+    NgxMapboxGLModule.withConfig({
+      accessToken: 'API_KEY',
+    }),
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

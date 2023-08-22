@@ -17,6 +17,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
+import { DividerModule } from 'primeng/divider';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 const modules = [
   ButtonModule,
@@ -36,6 +40,10 @@ const modules = [
   ConfirmPopupModule,
   InputTextareaModule,
   FileUploadModule,
+  DividerModule,
+  MegaMenuModule,
+  InputSwitchModule,
+  AutoCompleteModule,
 ];
 
 @NgModule({

@@ -15,16 +15,20 @@ export class MerchantService {
   readonly apiUrl = '/api';
 
   getMerchants(
-    isActive?: boolean,
-    limit?: number,
-    offset?: number,
+    like?: string | null,
+    page?: number | null,
+    size?: number | null,
+    sortColumn?: string | null,
+    sortDirection?: number | null,
   ): Observable<Merchant[]> {
     return this.http.get<Merchant[]>(`${this.apiUrl}/merchants`, {
       headers: this.httpHeaders,
       params: {
-        isActive: isActive ?? '',
-        limit: limit ?? '',
-        offset: offset ?? '',
+        like: like ?? '',
+        page: page ?? '',
+        size: size ?? '',
+        sortColumn: sortColumn ?? '',
+        sortDirection: sortDirection ?? '',
       },
     });
   }
