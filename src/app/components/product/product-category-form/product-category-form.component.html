@@ -1,0 +1,36 @@
+<ng-container *ngIf="!editMode || (editMode && productCategoryForm.value.id)">
+  <h1 *ngIf="standaloneMode">{{ componentTitle }}</h1>
+  <form [formGroup]="productCategoryForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-column gap-1 mb-3" formGroupName="merchant">
+      <label htmlFor="merchantId">Merchant</label>
+      <p-dropdown [options]="merchants" optionLabel="name"
+                  optionValue="id" [autoDisplayFirst]="false"
+                  aria-describedby="merchantId-help" formControlName="id"></p-dropdown>
+      <ng-container *ngIf="merchantId.dirty || merchantId.touched">
+        <small id="merchantId-help" class="p-error" *ngIf="merchantId.getError('required')">Merchant is
+          required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="name">Name</label>
+      <input type="text" pInputText aria-describedby="name-help" formControlName="name">
+      <ng-container *ngIf="name.dirty || name.touched">
+        <small id="name-help" class="p-error" *ngIf="name.getError('required')">Name is required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="name">Colour</label>
+      <p-colorPicker formControlName="colour"></p-colorPicker>
+      <ng-container *ngIf="colour.dirty || colour.touched">
+        <small id="colour-help" class="p-error" *ngIf="colour.getError('required')">Colour is required</small>
+      </ng-container>
+    </div>
+    <div>
+      <button type="submit" pButton label="Submit"
+              [disabled]="productCategoryForm.invalid || (editMode && !productCategoryForm.dirty)"></button>
+      <p-button type="button" *ngIf="editMode" label="Delete" styleClass="ml-1 p-button-outlined p-button-danger"
+                (click)="confirmDelete($event)"></p-button>
+      <p-confirmPopup></p-confirmPopup>
+    </div>
+  </form>
+</ng-container>

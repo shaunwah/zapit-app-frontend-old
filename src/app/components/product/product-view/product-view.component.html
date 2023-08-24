@@ -16,12 +16,24 @@
       <span>{{ product.identifier }}</span>
     </li>
     <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Category</span>
+      <span>{{ product.productCategory?.name }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
       <span class="text-800 w-4 md:w-2">Description</span>
-      <span>{{ product.description }}</span>
+      <span>{{ product.description || '-' }}</span>
     </li>
     <li class="flex flex-wrap my-2">
       <span class="text-800 w-4 md:w-2">Unit Price</span>
       <span>{{ product.unitPrice | currency }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Quantity</span>
+      <span>{{ product.quantity | number }}</span>
+    </li>
+    <li class="flex flex-wrap my-2">
+      <span class="text-800 w-4 md:w-2">Active</span>
+      <span>{{ product.isActive }}</span>
     </li>
     <li class="flex flex-wrap my-2">
       <span class="text-800 w-4 md:w-2">Created by</span>
@@ -38,7 +50,6 @@
   </ul>
   <p-divider></p-divider>
   <h3>Merchant</h3>
-  <!--  <app-description-list [items]="items"></app-description-list>-->
   <ul class="list-none m-0 p-0">
     <li class="flex flex-wrap my-2">
       <span class="text-800 w-4 md:w-2">Name</span>

@@ -23,6 +23,16 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
   readonly merchantId = Number(this.route.snapshot.paramMap.get('merchantId'));
   merchantForm!: FormGroup;
   merchantStoreForm!: FormGroup;
+  readonly merchantStoreFormTemplate = {
+    id: [''],
+    identifier: ['', [Validators.required]],
+    name: ['', [Validators.required]],
+    address: [''],
+    postCode: [''],
+    website: ['', [Validators.pattern('[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]],
+    telephone: [''],
+    isActive: [true],
+  };
   getMerchantByIdSub?: Subscription;
   createMerchantSub?: Subscription;
   updateMerchantSub?: Subscription;
@@ -73,22 +83,14 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
       next: (users) => (this.users = users),
     });
 
-    this.merchantStoreForm = this.fb.group({
-      id: [''],
-      identifier: [''], // TODO validation
-      name: [''],
-      address: [''],
-      postCode: [''],
-      website: [''],
-      telephone: [''],
-      isActive: [true],
-    });
+    this.merchantStoreForm = this.fb.group(this.merchantStoreFormTemplate);
 
     this.merchantForm = this.fb.group({
+      id: [''],
       identifier: ['', [Validators.required]],
       name: ['', [Validators.required]],
       nameAlt: [''],
-      website: [''],
+      website: ['', [Validators.pattern('[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]],
       merchantUsers: [[]],
       merchantStores: this.fb.array([this.merchantStoreForm]),
       isActive: [true],
@@ -96,23 +98,13 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
   }
 
   addMerchantStore() {
-    // TODO
-    const merchantStoreForm = this.fb.group({
-      id: [''],
-      identifier: [''],
-      name: [''],
-      address: [''],
-      postCode: [''],
-      website: [''],
-      telephone: [''],
-      isActive: [true],
-    });
-    this.merchantStores.push(merchantStoreForm);
+    this.merchantStores.push(this.fb.group(this.merchantStoreFormTemplate));
   }
 
   removeMerchantStore(index: number) {
     if (index != 0) {
       this.merchantStores.removeAt(index);
+      this.merchantForm.markAsDirty();
     }
   }
 
@@ -139,23 +131,18 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
   get identifier() {
     return this.merchantForm.get('identifier')!;
   }
-
   get name() {
     return this.merchantForm.get('name')!;
   }
-
   get merchantStores() {
     return this.merchantForm.get('merchantStores') as FormArray;
   }
-
   get nameAlt() {
     return this.merchantForm.get('nameAlt')!;
   }
-
   get website() {
     return this.merchantForm.get('website')!;
   }
-
   get isActive() {
     return this.merchantForm.get('isActive')!;
   }
@@ -184,7 +171,6 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
   }
 
   private createMerchant() {
-    console.log(this.merchantForm.value); // TODO
     this.getMerchantByIdSub = this.merchantService
       .createMerchant({
         ...this.merchantForm.value,
@@ -209,10 +195,8 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
   }
 
   private updateMerchant() {
-    console.log(this.merchantForm.value);
     this.updateMerchantSub = this.merchantService
       .updateMerchant({
-        id: this.merchantId,
         ...this.merchantForm.value,
       })
       .subscribe({

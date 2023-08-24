@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule } from './primeng.module';
 import { ProductFormComponent } from './components/product/product-form/product-form.component';
@@ -23,6 +23,11 @@ import { MerchantListComponent } from './components/merchant/merchant-list/merch
 import { MerchantViewComponent } from './components/merchant/merchant-view/merchant-view.component';
 import { MerchantFormComponent } from './components/merchant/merchant-form/merchant-form.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ProductCategoryFormComponent } from './components/product/product-category-form/product-category-form.component';
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import { RolePipe } from './pipes/role.pipe';
+import { ProductCategoryListComponent } from './components/product/product-category-list/product-category-list.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,10 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
     MerchantListComponent,
     MerchantViewComponent,
     MerchantFormComponent,
+    PageNotFoundComponent,
+    ProductCategoryFormComponent,
+    RolePipe,
+    ProductCategoryListComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +74,9 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
       accessToken: 'API_KEY',
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,11 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MerchantService } from '../../../services/merchant.service';
 import { Merchant } from '../../../interfaces/merchant';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductCategory } from '../../../interfaces/product-category';
 
 @Component({
   selector: 'app-product-form',
@@ -20,13 +21,27 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   private merchantService = inject(MerchantService);
   private messageService = inject(MessageService);
   readonly productId = Number(this.route.snapshot.paramMap.get('productId'));
+  merchants!: Merchant[];
+  productCategories!: ProductCategory[];
   productForm!: FormGroup;
+  getMerchantsSub?: Subscription;
+  getProductCategoriesSub?: Subscription;
   getProductByIdSub?: Subscription;
   createProductSub?: Subscription;
   updateProductSub?: Subscription;
-  merchants$!: Observable<Merchant[]>;
   componentTitle!: string;
   editMode!: Boolean;
+  visible = false;
+
+  submitProductCategoryForm(productCategory: ProductCategory) {
+    // TODO refresh dropdown
+    this.productCategories.push(productCategory);
+    this.visible = false;
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
 
   ngOnInit() {
     if (!this.router.url.endsWith('/edit')) {
@@ -38,7 +53,10 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       this.getProductByIdSub = this.productService
         .getProductById(this.productId)
         .subscribe({
-          next: (product) => this.productForm.patchValue(product),
+          next: (product) => {
+            this.productForm.patchValue(product);
+            this.getProductCategories(product.merchant.id!); // TODO
+          },
           error: (err) => {
             this.messageService.add({
               severity: 'error',
@@ -49,17 +67,25 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           },
         });
     }
-    this.merchants$ = this.merchantService.getMerchants();
+    this.getMerchantsSub = this.merchantService.getMerchants().subscribe({
+      next: (merchants) => (this.merchants = merchants),
+    });
 
     this.productForm = this.fb.group({
+      id: [''],
       merchant: this.fb.group({
         id: ['', [Validators.required]],
       }),
       identifier: ['', [Validators.required]],
       name: ['', [Validators.required]],
       image: [''],
+      productCategory: this.fb.group({
+        id: [{ value: '', disabled: true }, [Validators.required]],
+      }),
       description: [''],
       unitPrice: ['', [Validators.required, Validators.min(0)]],
+      quantity: ['', [Validators.required, Validators.min(0)]],
+      isActive: [true, [Validators.required]],
     });
   }
 
@@ -69,8 +95,19 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     this.updateProductSub?.unsubscribe();
   }
 
+  getProductCategories(merchantId: number) {
+    this.getProductCategoriesSub = this.productService
+      .getProductCategoriesByMerchantId(merchantId)
+      .subscribe({
+        next: (productCategories) => {
+          this.productCategories = productCategories;
+          this.productCategoryId.enable();
+        },
+      });
+  }
+
   get merchantId() {
-    return this.productForm.get('merchant')!.get('id')!;
+    return this.productForm.get('merchant.id')!;
   }
 
   get identifier() {
@@ -85,12 +122,24 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     return this.productForm.get('image')!;
   }
 
+  get productCategoryId() {
+    return this.productForm.get('productCategory.id')!;
+  }
+
   get description() {
     return this.productForm.get('description')!;
   }
 
   get unitPrice() {
     return this.productForm.get('unitPrice')!;
+  }
+
+  get quantity() {
+    return this.productForm.get('quantity')!;
+  }
+
+  get isActive() {
+    return this.productForm.get('isActive')!;
   }
 
   onUpload(event: any) {
@@ -108,7 +157,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   private createProduct() {
     this.createProductSub = this.productService
       .createProduct({
-        //validate if merchant is user
         ...this.productForm.value,
       })
       .subscribe({
@@ -133,8 +181,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   private updateProduct() {
     this.updateProductSub = this.productService
       .updateProduct({
-        //validate if merchant is user
-        id: this.productId,
         ...this.productForm.value,
       })
       .subscribe({

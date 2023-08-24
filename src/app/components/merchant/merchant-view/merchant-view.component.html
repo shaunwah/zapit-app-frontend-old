@@ -6,9 +6,9 @@
     <div class="flex align-items-center">
       <p-button icon="pi pi-file-edit" styleClass="p-button-outlined mr-2"
                 [routerLink]="['/merchant', merchant.id, 'edit']"></p-button>
-      <p-button icon="pi pi-trash" styleClass="p-button-outlined p-button-danger"
-                (click)="confirmDelete($event)"></p-button>
-      <p-confirmPopup></p-confirmPopup>
+        <p-button icon="pi pi-trash" styleClass="p-button-outlined p-button-danger"
+                  (click)="confirmDelete($event)"></p-button> <!-- TODO hide if not owner -->
+        <p-confirmPopup></p-confirmPopup>
     </div>
   </div>
   <h3 class="mt-0">Details</h3>
@@ -21,7 +21,7 @@
         </li>
         <li class="flex flex-wrap my-2">
           <span class="text-800 w-4 md:w-2">Website</span>
-          <span><a class="no-underline" href="{{ merchant.website }}" target="_blank">{{ merchant.website }}</a></span>
+          <span><a class="no-underline" [href]="merchant.website" target="_blank">{{ merchant.website || '-' }}</a></span>
         </li>
         <li class="flex flex-wrap my-2">
           <span class="text-800 w-4 md:w-2">Active</span>
@@ -62,7 +62,7 @@
         <tr>
           <th>ID</th>
           <th>Username</th>
-          <th>Roles</th>
+          <th>Role</th>
           <th>Added on</th>
         </tr>
       </ng-template>
@@ -70,7 +70,7 @@
         <tr>
           <td>{{ merchantUser.user.id }}</td>
           <td>{{ merchantUser.user.username }}</td>
-          <td>{{ merchantUser.roles }}</td>
+          <td>{{ merchantUser.roles | role }}</td>
           <td>{{ merchantUser.createdOn | date: "medium" }}</td>
         </tr>
       </ng-template>
@@ -87,19 +87,19 @@
       </li>
       <li class="flex flex-wrap my-2">
         <span class="text-800 w-4 md:w-2">Website</span>
-        <span><a class="no-underline" href="{{ merchantStore.website }}" target="_blank">{{ merchantStore.website }}</a></span>
+        <span><a class="no-underline" [href]="merchantStore.website" target="_blank">{{ merchantStore.website || '-' }}</a></span>
       </li>
       <li class="flex flex-wrap my-2">
         <span class="text-800 w-4 md:w-2">Telephone</span>
-        <span>{{ merchantStore.telephone }}</span>
+        <span>{{ merchantStore.telephone || '-' }}</span>
       </li>
       <li class="flex flex-wrap my-2">
         <span class="text-800 w-4 md:w-2">Address</span>
-        <span>{{ merchantStore.address }}</span>
+        <span>{{ merchantStore.address || '-' }}</span>
       </li>
       <li class="flex flex-wrap my-2">
         <span class="text-800 w-4 md:w-2">Postal Code</span>
-        <span>{{ merchantStore.postCode }}</span>
+        <span>{{ merchantStore.postCode || '-' }}</span>
       </li>
       <li class="flex flex-wrap my-2">
         <span class="text-800 w-4 md:w-2">Active</span>

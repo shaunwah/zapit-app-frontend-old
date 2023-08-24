@@ -46,6 +46,50 @@ export class MenubarComponent implements OnInit {
             icon: 'pi pi-fw pi-plus',
             routerLink: '/product/new',
           },
+          {
+            separator: true,
+          },
+          {
+            label: 'Categories',
+            icon: 'pi pi-fw pi-box'
+          },
+          {
+            label: 'View',
+            icon: 'pi pi-fw pi-list',
+            routerLink: '/product-categories',
+          },
+          {
+            label: 'New',
+            icon: 'pi pi-fw pi-plus',
+            routerLink: '/product-category/new',
+          },
+        ],
+      },
+      {
+        label: 'Invoices',
+        icon: 'pi pi-fw pi-box',
+        items: [
+          {
+            label: 'View',
+            icon: 'pi pi-fw pi-list',
+            routerLink: '/invoices',
+          },
+          {
+            label: 'New',
+            icon: 'pi pi-fw pi-plus',
+            routerLink: '/invoices/new',
+          },
+        ],
+      },
+      {
+        label: 'Transactions',
+        icon: 'pi pi-fw pi-box',
+        items: [
+          {
+            label: 'View',
+            icon: 'pi pi-fw pi-list',
+            routerLink: '/transactions',
+          },
         ],
       },
       {

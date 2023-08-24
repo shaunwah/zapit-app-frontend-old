@@ -19,24 +19,26 @@
           </small>
         </ng-container>
       </div>
-      <div class="flex flex-column gap-1 mb-3">
-        <label htmlFor="password">Password</label>
-        <input type="password" pInputText aria-describedby="password-help" formControlName="password">
-        <ng-container *ngIf="password.dirty || password.touched">
-          <small id="password-help" class="p-error" *ngIf="password.getError('required')">Password is required</small>
-        </ng-container>
-      </div>
-      <div class="flex flex-column gap-1 mb-3">
-        <label htmlFor="passwordConfirm">Confirm Password</label>
-        <input type="password" pInputText aria-describedby="passwordConfirm-help" formControlName="passwordConfirm">
-        <ng-container *ngIf="passwordConfirm.dirty || passwordConfirm.touched">
-          <small id="passwordConfirm-help" class="p-error">
-            <ng-container *ngIf="passwordConfirm.getError('required')">Confirm password is required<br></ng-container>
-            <ng-container *ngIf="passwordConfirm.touched && registerForm.getError('passwordsDoNotMatch')">Passwords do
-              not match
-            </ng-container>
-          </small>
-        </ng-container>
+      <div class="grid mb-3">
+        <div class="col flex flex-column gap-1">
+          <label htmlFor="password">Password</label>
+          <input type="password" pInputText aria-describedby="password-help" formControlName="password">
+          <ng-container *ngIf="password.dirty || password.touched">
+            <small id="password-help" class="p-error" *ngIf="password.getError('required')">Password is required</small>
+          </ng-container>
+        </div>
+        <div class="col flex flex-column gap-1">
+          <label htmlFor="passwordConfirm">Confirm Password</label>
+          <input type="password" pInputText aria-describedby="passwordConfirm-help" formControlName="passwordConfirm">
+          <ng-container *ngIf="passwordConfirm.dirty || passwordConfirm.touched">
+            <small id="passwordConfirm-help" class="p-error">
+              <ng-container *ngIf="passwordConfirm.getError('required')">Confirm password is required<br></ng-container>
+              <ng-container *ngIf="passwordConfirm.touched && registerForm.getError('passwordsDoNotMatch')">Passwords do
+                not match
+              </ng-container>
+            </small>
+          </ng-container>
+        </div>
       </div>
       <div>
         <button type="submit" pButton label="Register" [disabled]="registerForm.invalid"></button>

@@ -26,22 +26,24 @@
   >
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="merchant">Merchant <p-sortIcon field="merchant"></p-sortIcon></th>
-        <th>Image</th>
         <th pSortableColumn="identifier">Identifier <p-sortIcon field="identifier"></p-sortIcon></th>
+        <th>Image</th>
         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="productCategory">Category <p-sortIcon field="category"></p-sortIcon></th>
         <th pSortableColumn="unitPrice">Unit Price <p-sortIcon field="unitPrice"></p-sortIcon></th>
-        <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
+        <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
+        <th pSortableColumn="isActive">Active <p-sortIcon field="isActive"></p-sortIcon></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr [pSelectableRow]="product">
-        <td>{{ product.merchant.name }}</td>
-        <td>image</td>
         <td>{{ product.identifier }}</td>
+        <td>image</td>
         <td>{{ product.name }}</td>
+        <td><p-chip [style]="{ 'background-color': product.productCategory.colour }">{{ product.productCategory.name }}</p-chip></td>
         <td>{{ product.unitPrice | currency }}</td>
-        <td>category</td>
+        <td>{{ product.quantity | number }}</td>
+        <td>{{ product.isActive }}</td>
       </tr>
     </ng-template>
   </p-table>

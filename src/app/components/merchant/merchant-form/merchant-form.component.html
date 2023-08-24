@@ -1,92 +1,123 @@
-<h1>{{ componentTitle }}</h1>
-<form [formGroup]="merchantForm" (ngSubmit)="onSubmit()">
-  <h2>Details</h2>
-  <div class="flex flex-column gap-1 mb-3">
-    <label htmlFor="identifier">Identifier</label>
-    <input type="text" pInputText aria-describedby="identifier-help" formControlName="identifier">
-    <ng-container *ngIf="identifier.dirty || identifier.touched">
-      <small id="identifier-help" class="p-error" *ngIf="identifier.getError('required')">Identifier is required</small>
-    </ng-container>
-  </div>
-  <div class="flex flex-column gap-1 mb-3">
-    <label htmlFor="name">Name</label>
-    <input type="text" pInputText aria-describedby="name-help" formControlName="name">
-    <ng-container *ngIf="name.dirty || name.touched">
-      <small id="name-help" class="p-error" *ngIf="name.getError('required')">Name is required</small>
-    </ng-container>
-  </div>
-  <div class="flex flex-column gap-1 mb-3">
-    <label htmlFor="nameAlt">Alternate Name</label>
-    <input type="text" pInputText aria-describedby="nameAlt-help" formControlName="nameAlt">
-    <small id="nameAlt-help">For businesses operating under another name</small>
-  </div>
-  <div class="flex flex-column gap-1 mb-3">
-    <label htmlFor="website">Website</label>
-    <input type="url" pInputText formControlName="website">
-  </div>
-  <div class="flex flex-column gap-1 mb-3">
-    <label htmlFor="merchantUsers">Members</label>
-    <span class="p-fluid">
+<ng-container *ngIf="!editMode || (editMode && merchantForm.value.id)">
+  <h1>{{ componentTitle }}</h1>
+  <form [formGroup]="merchantForm" (ngSubmit)="onSubmit()">
+    <h2>Details</h2>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="identifier">Identifier</label>
+      <input type="text" pInputText aria-describedby="identifier-help" formControlName="identifier">
+      <ng-container *ngIf="identifier.dirty || identifier.touched">
+        <small id="identifier-help" class="p-error" *ngIf="identifier.getError('required')">Identifier is
+          required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="name">Name</label>
+      <input type="text" pInputText aria-describedby="name-help" formControlName="name">
+      <ng-container *ngIf="name.dirty || name.touched">
+        <small id="name-help" class="p-error" *ngIf="name.getError('required')">Name is required</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="nameAlt">Alternate Name</label>
+      <input type="text" pInputText aria-describedby="nameAlt-help" formControlName="nameAlt">
+      <small id="nameAlt-help">For businesses operating under another name</small>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="website">Website</label>
+      <input type="url" pInputText aria-describedby="website-help" formControlName="website">
+      <ng-container *ngIf="website.dirty || website.touched">
+        <small id="website-help" class="p-error" *ngIf="website.getError('pattern')">Website has to be in a valid
+          format</small>
+      </ng-container>
+    </div>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="merchantUsers">Members</label>
+      <span class="p-fluid">
             <p-autoComplete [suggestions]="filteredUsers" (completeMethod)="filter($event)" field="username"
                             [multiple]="true" [unique]="true"
                             formControlName="merchantUsers"></p-autoComplete>
         </span>
-  </div>
-  <div class="flex flex-column gap-1 mb-3">
-    <label htmlFor="isActive">Active</label>
-    <p-inputSwitch formControlName="isActive"></p-inputSwitch>
-  </div>
-  <p-divider></p-divider>
-  <h2>Store Details</h2>
-  <ng-container formArrayName="merchantStores">
-    <ng-container *ngFor="let merchantStore of merchantStores.controls; let i = index">
-      <ng-container [formGroupName]="i">
-        <h3>Store {{ i + 1 }}</h3>
-        <p *ngIf="i != 0"><a class="cursor-pointer text-red-600 hover:text-red-800"
-                             (click)="removeMerchantStore(i)"><span class="pi pi-times"></span> Remove Store</a></p>
-        <div class="grid">
-          <div class="col-12 md:col">
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="identifier">Identifier</label>
-              <input type="text" pInputText aria-describedby="identifier-help" formControlName="identifier">
-            </div>
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="name">Name</label>
-              <input type="text" pInputText aria-describedby="name-help" formControlName="name">
-            </div>
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="website">Website</label>
-              <input type="url" pInputText aria-describedby="website-help" formControlName="website">
-            </div>
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="telephone">Telephone</label>
-              <input type="tel" pInputText aria-describedby="telephone-help" formControlName="telephone">
-            </div>
-          </div>
-          <div class="col-12 md:col">
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="address">Address</label>
-              <textarea rows="5" cols="30" pInputTextarea aria-describedby="address-help"
-                        formControlName="address"></textarea>
-            </div>
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="postCode">Postal Code</label>
-              <input type="text" pInputText aria-describedby="postCode-help" formControlName="postCode">
-            </div>
-            <div class="flex flex-column gap-1 mb-3">
-              <label htmlFor="isActive">Active</label>
-              <p-inputSwitch formControlName="isActive"></p-inputSwitch>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-    </ng-container>
-    <div class="mb-3">
-      <button type="button" pButton label="Add Store" (click)="addMerchantStore()"></button>
     </div>
-  </ng-container>
-  <div>
-    <button type="submit" pButton label="Submit"
-            [disabled]="merchantForm.invalid || (editMode && !merchantForm.dirty)"></button>
-  </div>
-</form>
+    <div class="flex flex-column gap-1 mb-3">
+      <label htmlFor="isActive">Active</label>
+      <p-inputSwitch formControlName="isActive"></p-inputSwitch>
+    </div>
+    <p-divider></p-divider>
+    <h2>Store Details</h2>
+    <ng-container formArrayName="merchantStores">
+      <ng-container *ngFor="let merchantStore of merchantStores.controls; let i = index">
+        <ng-container [formGroupName]="i">
+          <h3>Store {{ i + 1 }}</h3>
+          <p *ngIf="i != 0"><a class="cursor-pointer text-red-600 hover:text-red-800"
+                               (click)="removeMerchantStore(i)"><span class="pi pi-times"></span> Remove
+            Store {{ i + 1 }}</a>
+          </p>
+          <div class="grid">
+            <div class="col-12 md:col">
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="identifier{{ i }}">Identifier</label>
+                <input type="text" pInputText aria-describedby="identifier-help"
+                       formControlName="identifier">
+                <ng-container
+                  *ngIf="merchantStores.controls[i].get('identifier')?.dirty || merchantStores.controls[i].get('identifier')?.touched">
+                  <small id="identifier{{ i }}-help" class="p-error"
+                         *ngIf="merchantStores.controls[i].get('identifier')?.getError('required')">Identifier is
+                    required</small>
+                </ng-container>
+              </div>
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="name{{ i }}">Name</label>
+                <input type="text" pInputText aria-describedby="name-help" formControlName="name">
+                <ng-container
+                  *ngIf="merchantStores.controls[i].get('name')?.dirty || merchantStores.controls[i].get('name')?.touched">
+                  <small id="name{ {i }}-help" class="p-error"
+                         *ngIf="merchantStores.controls[i].get('name')?.getError('required')">Name is
+                    required</small>
+                </ng-container>
+              </div>
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="website{{ i }}">Website</label>
+                <input type="url" pInputText aria-describedby="website-help" formControlName="website">
+                <ng-container
+                  *ngIf="merchantStores.controls[i].get('website')?.dirty || merchantStores.controls[i].get('website')?.touched">
+                  <small id="website{{ i }}-help" class="p-error"
+                         *ngIf="merchantStores.controls[i].get('website')?.getError('pattern')">Website has to be in a
+                    valid format</small>
+                </ng-container>
+              </div>
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="telephone{{ i }}">Telephone</label>
+                <input type="tel" pInputText aria-describedby="telephone-help"
+                       formControlName="telephone">
+              </div>
+            </div>
+            <div class="col-12 md:col">
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="address{{ i }}">Address</label>
+                <textarea rows="5" cols="30" pInputTextarea aria-describedby="address-help"
+                          formControlName="address"></textarea>
+              </div>
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="postCode{{ i }}">Postal Code</label>
+                <input type="text" pInputText aria-describedby="postCode-help"
+                       formControlName="postCode">
+              </div>
+              <div class="flex flex-column gap-1 mb-3">
+                <label htmlFor="isActive{{ i }}">Active</label>
+                <p-inputSwitch formControlName="isActive"></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <div class="mb-3">
+        <p-button label="Add Store" icon="pi pi-plus" styleClass="p-button-outlined p-button-success p-button-sm"
+                  (click)="addMerchantStore()"></p-button>
+      </div>
+    </ng-container>
+    <div>
+      <button type="submit" pButton label="Submit"
+              [disabled]="merchantForm.invalid || (editMode && !merchantForm.dirty)"></button>
+    </div>
+  </form>
+</ng-container>

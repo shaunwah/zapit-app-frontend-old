@@ -67,4 +67,6 @@ export class MerchantViewComponent implements OnInit, OnDestroy {
         },
       });
   }
+
+  protected readonly localStorage = localStorage;
 }

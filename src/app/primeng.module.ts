@@ -21,6 +21,11 @@ import { DividerModule } from 'primeng/divider';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DialogModule } from 'primeng/dialog';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { TagModule } from 'primeng/tag';
+import { PasswordModule } from 'primeng/password';
+import { ChipModule } from 'primeng/chip';
 
 const modules = [
   ButtonModule,
@@ -44,6 +49,12 @@ const modules = [
   MegaMenuModule,
   InputSwitchModule,
   AutoCompleteModule,
+  DialogModule,
+  ColorPickerModule,
+  TagModule,
+  PasswordModule,
+  InputNumberModule,
+  ChipModule,
 ];
 
 @NgModule({

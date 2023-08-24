@@ -33,12 +33,20 @@
         <th pSortableColumn="name">Name
           <p-sortIcon field="name"></p-sortIcon>
         </th>
+        <th pSortableColumn="stores">Stores
+          <p-sortIcon field="stores"></p-sortIcon>
+        </th>
+        <th pSortableColumn="isActive">Active
+          <p-sortIcon field="isActive"></p-sortIcon>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-merchant>
       <tr [pSelectableRow]="merchant">
         <td>{{ merchant.identifier }}</td>
         <td>{{ merchant.name }}</td>
+        <td>{{ merchant.merchantStores.length }}</td>
+        <td>{{ merchant.isActive }}</td>
       </tr>
     </ng-template>
   </p-table>

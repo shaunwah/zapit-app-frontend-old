@@ -28,7 +28,7 @@ export class LoginFormComponent implements OnInit, AfterContentChecked {
     this.next = this.route.snapshot.queryParamMap.get('next');
 
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
   }

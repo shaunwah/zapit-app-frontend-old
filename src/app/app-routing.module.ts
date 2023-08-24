@@ -11,6 +11,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MerchantListComponent } from './components/merchant/merchant-list/merchant-list.component';
 import { MerchantFormComponent } from './components/merchant/merchant-form/merchant-form.component';
 import { MerchantViewComponent } from './components/merchant/merchant-view/merchant-view.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ProductCategoryFormComponent } from './components/product/product-category-form/product-category-form.component';
+import {ProductCategoryListComponent} from "./components/product/product-category-list/product-category-list.component";
 
 const routes: Routes = [
   {
@@ -107,7 +110,39 @@ const routes: Routes = [
       breadcrumb: 'View',
     },
   },
-  // { path: '**', redirectTo: '', pathMatch: 'prefix' }
+  {
+    path: 'product-categories',
+    component: ProductCategoryListComponent,
+    title: 'Product Categories',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'New',
+    },
+  },
+  {
+    path: 'product-category/new',
+    component: ProductCategoryFormComponent,
+    title: 'New Product Category',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'New',
+    },
+  },
+  {
+    path: 'product-category/:productCategoryId/edit',
+    component: ProductCategoryFormComponent,
+    title: 'New Product Category',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'Edit',
+    },
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    title: 'Not Found',
+    canActivate: [authGuard],
+  },
 ];
 
 @NgModule({
