@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { Utilities } from '../../../utilities/utilities';
 
 @Component({
   selector: 'app-login-form',
@@ -41,40 +42,31 @@ export class LoginFormComponent implements OnInit, AfterContentChecked {
     this.loginSub?.unsubscribe();
   }
 
+  onSubmit() {
+    this.loginSub = this.authService
+      .login(this.loginForm.value)
+      .subscribe({
+        next: (data: any) => {
+          this.authService.setTokenInStorage(data.token);
+          this.authService.setUsernameInStorage(data.username);
+          this.router
+            .navigate(this.next ? [`/${this.next}`] : ['/'])
+            .then(() =>
+              this.messageService.add(
+                Utilities.customToastSuccessMessage('Logged in'),
+              ),
+            );
+        },
+        error: (err) =>
+          this.messageService.add(Utilities.customToastErrorMessage(err)),
+      });
+  }
+
   get email() {
     return this.loginForm.get('email')!;
   }
 
   get password() {
     return this.loginForm.get('password')!;
-  }
-
-  onSubmit() {
-    this.loginSub = this.authService
-      .login({ ...this.loginForm.value })
-      .subscribe({
-        next: (data) => {
-          this.authService.setTokenInStorage((data as any).token);
-          this.authService.setUsernameInStorage((data as any).username);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Logged in',
-          });
-          console.log(this.next);
-          if (this.next) {
-            this.router.navigate([`/${this.next}`]);
-            return;
-          }
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Invalid email and/or password',
-          });
-        },
-      });
   }
 }

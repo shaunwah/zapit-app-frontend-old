@@ -24,11 +24,11 @@ export class MerchantService {
     return this.http.get<Merchant[]>(`${this.apiUrl}/merchants`, {
       headers: this.httpHeaders,
       params: {
-        like: like ?? '',
-        page: page ?? '',
-        size: size ?? '',
-        sortColumn: sortColumn ?? '',
-        sortDirection: sortDirection ?? '',
+        like: like ?? [],
+        page: page ?? [],
+        size: size ?? [],
+        sortColumn: sortColumn ?? [],
+        sortDirection: sortDirection ?? [],
       },
     });
   }

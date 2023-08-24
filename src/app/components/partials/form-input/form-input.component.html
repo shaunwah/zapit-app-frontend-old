@@ -1,0 +1,8 @@
+<div class="flex flex-column gap-1 mb-3">
+  <label [htmlFor]="name">{{ displayName }}</label>
+  <input type="text" pInputText [formControlName]="name">
+  <ng-container *ngIf="abstractControl.hasValidator(Validators.required) && (abstractControl.dirty || abstractControl.touched)">
+    <small class="p-error" *ngIf="abstractControl.getError('required')">{{ name }} is
+      required</small>
+  </ng-container>
+</div>

@@ -31,11 +31,11 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiUrl}/products`, {
       headers: this.httpHeaders,
       params: {
-        like: like ?? '',
-        page: page ?? '',
-        size: size ?? '',
-        sortColumn: sortColumn ?? '',
-        sortDirection: sortDirection ?? '',
+        like: like ?? [],
+        page: page ?? [],
+        size: size ?? [],
+        sortColumn: sortColumn ?? [],
+        sortDirection: sortDirection ?? [],
       },
     });
   }
@@ -47,7 +47,6 @@ export class ProductService {
   }
 
   createProduct(product: Product): Observable<Product> {
-    console.log(product);
     return this.http.post<Product>(`${this.apiUrl}/products`, product, {
       headers: this.httpHeaders,
     });
@@ -66,18 +65,18 @@ export class ProductService {
   }
 
   getProductCategories(
-    page?: number,
-    size?: number,
-    sortColumn?: string,
-    sortDirection?: number,
+    page?: number | null,
+    size?: number | null,
+    sortColumn?: string | null,
+    sortDirection?: number | null,
   ): Observable<ProductCategory[]> {
     return this.http.get<ProductCategory[]>(`${this.apiUrl}/product-categories`, {
       headers: this.httpHeaders,
       params: {
-        page: page ?? '',
-        size: size ?? '',
-        sortColumn: sortColumn ?? '',
-        sortDirection: sortDirection ?? '',
+        page: page ?? [],
+        size: size ?? [],
+        sortColumn: sortColumn ?? [],
+        sortDirection: sortDirection ?? [],
       },
     });
   }

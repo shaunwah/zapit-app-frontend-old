@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { User } from '../../../interfaces/user';
 import { UserService } from '../../../services/user.service';
 import { MerchantUser } from '../../../interfaces/merchant-user';
+import {Constants} from "../../../utilities/constants";
+import {Utilities} from "../../../utilities/utilities";
 
 @Component({
   selector: 'app-merchant-form',
@@ -21,6 +23,7 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
   private messageService = inject(MessageService);
   private userService = inject(UserService);
   readonly merchantId = Number(this.route.snapshot.paramMap.get('merchantId'));
+  readonly validatorPatternUrl = Validators.pattern('[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)');
   merchantForm!: FormGroup;
   merchantStoreForm!: FormGroup;
   readonly merchantStoreFormTemplate = {
@@ -29,7 +32,7 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
     name: ['', [Validators.required]],
     address: [''],
     postCode: [''],
-    website: ['', [Validators.pattern('[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]],
+    website: ['', [this.validatorPatternUrl]],
     telephone: [''],
     isActive: [true],
   };
@@ -54,8 +57,8 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
         .getMerchantById(this.merchantId)
         .subscribe({
           next: (merchant) => {
-            merchant.merchantStores.forEach((_, index) => {
-              if (index != 0) {
+            merchant.merchantStores.forEach((_, i) => {
+              if (i != 0) {
                 this.addMerchantStore();
               }
             });
@@ -66,16 +69,10 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
               ) as User[], // TODO user lazyload
               merchantStores: [...merchant.merchantStores],
             });
-            console.log(this.merchantForm.value);
           },
-          error: (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: err.error.message,
-            });
-            this.router.navigate(['/merchants']);
-          },
+          error: (err) =>
+            this.router.navigate(['/merchants'])
+              .then(() => this.messageService.add(Constants.TOAST_ERROR))
         });
     }
 
@@ -90,7 +87,7 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
       identifier: ['', [Validators.required]],
       name: ['', [Validators.required]],
       nameAlt: [''],
-      website: ['', [Validators.pattern('[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)')]],
+      website: ['', [this.validatorPatternUrl]],
       merchantUsers: [[]],
       merchantStores: this.fb.array([this.merchantStoreForm]),
       isActive: [true],
@@ -128,25 +125,6 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
     this.getUsersSub?.unsubscribe();
   }
 
-  get identifier() {
-    return this.merchantForm.get('identifier')!;
-  }
-  get name() {
-    return this.merchantForm.get('name')!;
-  }
-  get merchantStores() {
-    return this.merchantForm.get('merchantStores') as FormArray;
-  }
-  get nameAlt() {
-    return this.merchantForm.get('nameAlt')!;
-  }
-  get website() {
-    return this.merchantForm.get('website')!;
-  }
-  get isActive() {
-    return this.merchantForm.get('isActive')!;
-  }
-
   onSubmit() {
     this.merchantForm.value.merchantUsers = this.mapUserstoMerchantUsers(
       this.merchantForm.value.merchantUsers,
@@ -172,49 +150,41 @@ export class MerchantFormComponent implements OnInit, OnDestroy {
 
   private createMerchant() {
     this.getMerchantByIdSub = this.merchantService
-      .createMerchant({
-        ...this.merchantForm.value,
-      })
+      .createMerchant(this.merchantForm.value)
       .subscribe({
-        next: (merchant) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: `${merchant.name} created`,
-          });
-          this.router.navigate(['/merchant', merchant.id]);
-        },
-        error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err.error.message,
-          });
-        },
+        next: (merchant) =>
+          this.router.navigate(['/merchant', merchant.id])
+            .then(() => this.messageService.add(Utilities.customToastSuccessMessage(`${merchant.name} created`))),
+        error: (err) => this.messageService.add(Utilities.customToastErrorMessage(err))
       });
   }
 
   private updateMerchant() {
     this.updateMerchantSub = this.merchantService
-      .updateMerchant({
-        ...this.merchantForm.value,
-      })
+      .updateMerchant(this.merchantForm.value)
       .subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: `${this.merchantForm.value.name} updated`,
-          });
-          this.router.navigate(['/merchant', this.merchantId]);
-        },
+        next: () =>
+          this.router.navigate(['/merchant', this.merchantId])
+            .then(() => this.messageService.add(Utilities.customToastSuccessMessage(`${this.merchantForm.value.name} updated`))),
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err.error.message,
-          });
+          this.messageService.add(Utilities.customToastErrorMessage(err));
         },
       });
+  }
+
+  get identifier() {
+    return this.merchantForm.get('identifier')!;
+  }
+  get name() {
+    return this.merchantForm.get('name')!;
+  }
+  get merchantStores() {
+    return this.merchantForm.get('merchantStores') as FormArray;
+  }
+  get website() {
+    return this.merchantForm.get('website')!;
+  }
+  get isActive() {
+    return this.merchantForm.get('isActive')!;
   }
 }

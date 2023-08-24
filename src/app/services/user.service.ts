@@ -24,11 +24,11 @@ export class UserService {
     return this.http.get<User[]>(`${this.apiUrl}/users`, {
       headers: this.httpHeaders,
       params: {
-        like: like ?? '',
-        page: page ?? '',
-        size: size ?? '',
-        sortColumn: sortColumn ?? '',
-        sortDirection: sortDirection ?? '',
+        like: like ?? [],
+        page: page ?? [],
+        size: size ?? [],
+        sortColumn: sortColumn ?? [],
+        sortDirection: sortDirection ?? [],
       },
     });
   }

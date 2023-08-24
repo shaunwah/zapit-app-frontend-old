@@ -1,9 +1,15 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { Subscription } from 'rxjs';
 import { Product } from '../../../interfaces/product';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  DatePipe,
+  formatCurrency,
+  formatDate,
+  formatNumber,
+} from '@angular/common';
 
 @Component({
   selector: 'app-product-view',
@@ -21,15 +27,38 @@ export class ProductViewComponent implements OnInit, OnDestroy {
   getProductByIdSub?: Subscription;
   deleteProductSub?: Subscription;
   product!: Product;
-  items!: { name: string; value: any }[];
+  productDl!: any;
+  merchantDl!: any;
 
   ngOnInit() {
+    const LOCALE = 'en-US';
     this.getProductByIdSub = this.productService
       .getProductById(this.productId)
       .subscribe({
-        next: (product) => (this.product = product),
+        next: (product) => {
+          this.product = product;
+          this.productDl = {
+            items: [
+              { name: 'Image', value: product.image },
+              { name: 'Identifier', value: product.identifier },
+              { name: 'Category', value: product.productCategory!.name },
+              { name: 'Description', value: product.description },
+              { name: 'Unit Price', value: formatCurrency(product.unitPrice, LOCALE, '$') },
+              { name: 'Quantity', value: formatNumber(product.quantity, LOCALE) },
+              { name: 'Active', value: product.isActive },
+              { name: 'Created by', value: product.createdBy!.username },
+              { name: 'Created on', value: formatDate(product.createdOn!, 'medium', LOCALE) },
+              { name: 'Updated on', value: formatDate(product.updatedOn!, 'medium', LOCALE) },
+            ],
+          };
+          this.merchantDl = {
+            items: [
+              { name: 'Name', value: product.merchant.name, routerLink: ['/merchant', product.merchant.id] },
+              { name: 'Identifier', value: product.merchant!.identifier },
+            ],
+          };
+        },
       });
-    this.items = [{ name: 'test', value: 1 }];
   }
 
   ngOnDestroy() {

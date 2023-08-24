@@ -27,6 +27,10 @@
         <small id="name-help" class="p-error" *ngIf="name.getError('required')">Name is required</small>
       </ng-container>
     </div>
+    <div class="flex flex-column gap-1 mb-3"> <!-- TODO -->
+      <label htmlFor="image">Image</label>
+      <input type="file" formControlName="image">
+    </div>
     <div class="flex flex-column gap-1 mb-3" formGroupName="productCategory">
       <label htmlFor="productCategoryId">Category</label>
       <p-dropdown [options]="productCategories" optionLabel="name" optionValue="id" [autoDisplayFirst]="false"

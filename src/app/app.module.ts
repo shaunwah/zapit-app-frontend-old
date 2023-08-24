@@ -28,6 +28,10 @@ import { ProductCategoryFormComponent } from './components/product/product-categ
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import { RolePipe } from './pipes/role.pipe';
 import { ProductCategoryListComponent } from './components/product/product-category-list/product-category-list.component';
+import { InvoiceFormComponent } from './components/invoice/invoice-form/invoice-form.component';
+import { InvoiceListComponent } from './components/invoice/invoice-list/invoice-list.component';
+import { InvoiceViewComponent } from './components/invoice/invoice-view/invoice-view.component';
+import { FormInputComponent } from './components/partials/form-input/form-input.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +53,10 @@ import { ProductCategoryListComponent } from './components/product/product-categ
     ProductCategoryFormComponent,
     RolePipe,
     ProductCategoryListComponent,
+    InvoiceFormComponent,
+    InvoiceListComponent,
+    InvoiceViewComponent,
+    FormInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,15 +75,15 @@ import { ProductCategoryListComponent } from './components/product/product-categ
       config: {
         tokenGetter: () => localStorage.getItem('access_token'),
         allowedDomains: ['localhost:8080'],
-        disallowedRoutes: ['https://example.com'],
+        disallowedRoutes: ['https://example.com'], // TODO
       },
     }),
     NgxMapboxGLModule.withConfig({
-      accessToken: 'API_KEY',
+      accessToken: '',
     }),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

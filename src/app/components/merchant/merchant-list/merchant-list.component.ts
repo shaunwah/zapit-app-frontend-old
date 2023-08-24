@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Table } from 'primeng/table';
 import { Merchant } from '../../../interfaces/merchant';
 import { MerchantService } from '../../../services/merchant.service';
+import {MessageService} from "primeng/api";
+import {Utilities} from "../../../utilities/utilities";
 
 @Component({
   selector: 'app-merchant-list',
@@ -13,6 +15,7 @@ import { MerchantService } from '../../../services/merchant.service';
 export class MerchantListComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private merchantService = inject(MerchantService);
+  private messageService = inject(MessageService);
   loading: boolean = false;
   merchants: Merchant[] = [];
   selectedMerchant!: Merchant;
@@ -46,7 +49,7 @@ export class MerchantListComponent implements OnInit, OnDestroy {
         .getMerchants(null, page, limit, sortColumn, sortDirection)
         .subscribe({
           next: (merchants) => (this.merchants = merchants),
-          error: (err) => {}, // TODO message
+          error: (err) => this.messageService.add(Utilities.customToastErrorMessage(err)),
           complete: () => (this.loading = false),
         });
     });

@@ -14,6 +14,9 @@ import { MerchantViewComponent } from './components/merchant/merchant-view/merch
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ProductCategoryFormComponent } from './components/product/product-category-form/product-category-form.component';
 import {ProductCategoryListComponent} from "./components/product/product-category-list/product-category-list.component";
+import {InvoiceListComponent} from "./components/invoice/invoice-list/invoice-list.component";
+import {InvoiceFormComponent} from "./components/invoice/invoice-form/invoice-form.component";
+import {InvoiceViewComponent} from "./components/invoice/invoice-view/invoice-view.component";
 
 const routes: Routes = [
   {
@@ -131,10 +134,46 @@ const routes: Routes = [
   {
     path: 'product-category/:productCategoryId/edit',
     component: ProductCategoryFormComponent,
-    title: 'New Product Category',
+    title: 'Edit Product Category',
     canActivate: [authGuard],
     data: {
       breadcrumb: 'Edit',
+    },
+  },
+  {
+    path: 'invoices',
+    component: InvoiceListComponent,
+    title: 'Invoices',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'List',
+    },
+  },
+  {
+    path: 'invoice/new',
+    component: InvoiceFormComponent,
+    title: 'New Invoice',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'New',
+    },
+  },
+  {
+    path: 'invoice/:invoiceId/edit',
+    component: InvoiceFormComponent,
+    title: 'Edit Invoice',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'Edit',
+    },
+  },
+  {
+    path: 'invoice/:invoiceId',
+    component: InvoiceViewComponent,
+    title: 'Invoice',
+    canActivate: [authGuard],
+    data: {
+      breadcrumb: 'Invoice',
     },
   },
   {

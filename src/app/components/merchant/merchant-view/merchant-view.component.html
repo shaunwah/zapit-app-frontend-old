@@ -14,42 +14,17 @@
   <h3 class="mt-0">Details</h3>
   <div class="grid">
     <div class="col-12 md:col-6">
-      <ul class="list-none m-0 p-0">
-        <li class="flex flex-wrap my-2">
-          <span class="text-800 w-4 md:w-2">Identifier</span>
-          <span>{{ merchant.identifier }}</span>
-        </li>
-        <li class="flex flex-wrap my-2">
-          <span class="text-800 w-4 md:w-2">Website</span>
-          <span><a class="no-underline" [href]="merchant.website" target="_blank">{{ merchant.website || '-' }}</a></span>
-        </li>
-        <li class="flex flex-wrap my-2">
-          <span class="text-800 w-4 md:w-2">Active</span>
-          <span>{{ merchant.isActive }}</span>
-        </li>
-        <li class="flex flex-wrap my-2">
-          <span class="text-800 w-4 md:w-2">Created by</span>
-          <span>{{ merchant.createdBy?.username }}</span>
-        </li>
-        <li class="flex flex-wrap my-2">
-          <span class="text-800 w-4 md:w-2">Created on</span>
-          <span>{{ merchant.createdOn | date: "medium" }}</span>
-        </li>
-        <li class="flex flex-wrap my-2">
-          <span class="text-800 w-4 md:w-2">Updated on</span>
-          <span>{{ merchant.updatedOn | date: "medium" }}</span>
-        </li>
-      </ul>
+      <app-p-description-list [data]="merchantDl"></app-p-description-list>
     </div>
     <div class="col-12 md:col-6">
-      <mgl-map
+      <mgl-map *ngIf="mapboxMapCoords"
         [style]="'mapbox://styles/mapbox/streets-v12'"
         [zoom]="[15]"
-        [center]="[1, 1]"
+        [center]="mapboxMapCoords"
       >
         <!-- TODO -->
         <mgl-control mglNavigation></mgl-control>
-        <mgl-marker #marker [lngLat]="[1, 1]"></mgl-marker>
+        <mgl-marker #marker [lngLat]="mapboxMapCoords"></mgl-marker>
         <mgl-popup [marker]="marker">{{ merchant.merchantStores[0].name }}</mgl-popup>
       </mgl-map>
     </div>
@@ -79,44 +54,6 @@
   <ng-container *ngIf="merchant.merchantStores">
     <p-divider></p-divider>
     <h3>Stores</h3>
-    <ul class="list-none m-0 p-0" *ngFor="let merchantStore of merchant.merchantStores">
-      <h4>{{ merchantStore.name }}</h4>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Identifier</span>
-        <span>{{ merchantStore.identifier }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Website</span>
-        <span><a class="no-underline" [href]="merchantStore.website" target="_blank">{{ merchantStore.website || '-' }}</a></span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Telephone</span>
-        <span>{{ merchantStore.telephone || '-' }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Address</span>
-        <span>{{ merchantStore.address || '-' }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Postal Code</span>
-        <span>{{ merchantStore.postCode || '-' }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Active</span>
-        <span>{{ merchantStore.isActive }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Created by</span>
-        <span>{{ merchantStore.createdBy?.username }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Created on</span>
-        <span>{{ merchantStore.createdOn | date: "medium" }}</span>
-      </li>
-      <li class="flex flex-wrap my-2">
-        <span class="text-800 w-4 md:w-2">Updated on</span>
-        <span>{{ merchantStore.updatedOn | date: "medium" }}</span>
-      </li>
-    </ul>
+    <app-p-description-list *ngFor="let msDl of merchantStoreDl" [data]="msDl"></app-p-description-list>
   </ng-container>
 </ng-container>

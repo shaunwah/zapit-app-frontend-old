@@ -9,7 +9,7 @@ import {AuthService} from "../../../services/auth.service";
 })
 export class MenubarComponent implements OnInit {
   authService = inject(AuthService);
-  username?: string | undefined;
+  username?: string;
   items!: MenuItem[];
 
   ngOnInit() {
@@ -77,7 +77,7 @@ export class MenubarComponent implements OnInit {
           {
             label: 'New',
             icon: 'pi pi-fw pi-plus',
-            routerLink: '/invoices/new',
+            routerLink: '/invoice/new',
           },
         ],
       },

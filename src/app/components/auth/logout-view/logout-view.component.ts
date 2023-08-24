@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Utilities } from '../../../utilities/utilities';
 
 @Component({
   selector: 'app-logout-view',
@@ -15,11 +16,12 @@ export class LogoutViewComponent implements OnInit {
 
   ngOnInit() {
     this.authService.logout();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Logged out',
-    });
-    this.router.navigate(['/login']);
+    this.router
+      .navigate(['/login'])
+      .then(() =>
+        this.messageService.add(
+          Utilities.customToastSuccessMessage('Logged out'),
+        ),
+      );
   }
 }

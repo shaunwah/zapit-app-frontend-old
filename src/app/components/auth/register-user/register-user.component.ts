@@ -10,6 +10,7 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { Utilities } from '../../../utilities/utilities';
 
 @Component({
   selector: 'app-register-user',
@@ -48,6 +49,26 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       : ({ passwordsDoNotMatch: { value: 'error' } } as ValidationErrors);
   }
 
+  onSubmit() {
+    console.log(this.registerForm.value);
+    this.registerSub = this.authService
+      .register(this.registerForm.value)
+      .subscribe({
+        next: (user) =>
+          this.router
+            .navigate(['/login'])
+            .then(() =>
+              this.messageService.add(
+                Utilities.customToastSuccessMessage(
+                  'Account registered. Please log in',
+                ),
+              ),
+            ),
+        error: (err) =>
+          this.messageService.add(Utilities.customToastErrorMessage(err)),
+      });
+  }
+
   get username() {
     return this.registerForm.get('username')!;
   }
@@ -62,28 +83,5 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   get passwordConfirm() {
     return this.registerForm.get('passwordConfirm')!;
-  }
-
-  onSubmit() {
-    console.log(this.registerForm.value);
-    this.registerSub = this.authService
-      .register({ ...this.registerForm.value })
-      .subscribe({
-        next: (user) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Account registered. Please log in',
-          });
-          this.router.navigate(['/login']);
-        },
-        error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Please try again later',
-          });
-        },
-      });
   }
 }

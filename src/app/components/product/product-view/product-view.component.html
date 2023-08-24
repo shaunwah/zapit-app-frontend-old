@@ -10,54 +10,8 @@
     </div>
   </div>
   <h3 class="mt-0">Details</h3>
-  <ul class="list-none m-0 p-0">
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Identifier</span>
-      <span>{{ product.identifier }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Category</span>
-      <span>{{ product.productCategory?.name }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Description</span>
-      <span>{{ product.description || '-' }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Unit Price</span>
-      <span>{{ product.unitPrice | currency }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Quantity</span>
-      <span>{{ product.quantity | number }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Active</span>
-      <span>{{ product.isActive }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Created by</span>
-      <span>{{ product.createdBy?.username }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Created on</span>
-      <span>{{ product.createdOn | date: "medium" }}</span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Updated on</span>
-      <span>{{ product.updatedOn | date: "medium" }}</span>
-    </li>
-  </ul>
+  <app-p-description-list [data]="productDl"></app-p-description-list>
   <p-divider></p-divider>
   <h3>Merchant</h3>
-  <ul class="list-none m-0 p-0">
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Name</span>
-      <span><a class="no-underline" [routerLink]="['/merchant', product.merchant.id]">{{ product.merchant.name }}</a></span>
-    </li>
-    <li class="flex flex-wrap my-2">
-      <span class="text-800 w-4 md:w-2">Identifier</span>
-      <span>{{ product.merchant.identifier }}</span>
-    </li>
-  </ul>
+  <app-p-description-list [data]="merchantDl"></app-p-description-list>
 </ng-container>
